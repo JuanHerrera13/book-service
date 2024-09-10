@@ -3,6 +3,9 @@ package com.example.bookservice.enumerator;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * Enum representing different error types and their messages.
+ */
 @Getter
 @AllArgsConstructor
 public enum Error {

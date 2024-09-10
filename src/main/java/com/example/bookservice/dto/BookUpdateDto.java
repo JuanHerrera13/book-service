@@ -1,9 +1,13 @@
 package com.example.bookservice.dto;
 
+import jakarta.validation.constraints.Digits;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Data Transfer Object (DTO) for updating a new book.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,7 +19,8 @@ public class BookUpdateDto {
 
     private String genre;
 
-    private float price;
+    @Digits(integer = 10, fraction = 2)
+    private Float price;
 
-    private int quantity;
+    private Integer quantity;
 }

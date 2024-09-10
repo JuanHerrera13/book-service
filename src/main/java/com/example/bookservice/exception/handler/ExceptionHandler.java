@@ -8,7 +8,10 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 
 import java.time.Instant;
 
-@ControllerAdvice
+/**
+ * Global exception handler for handling specific exceptions and returning structured error responses.
+ */
+@ControllerAdvice // Annotation that allows handling exceptions across the whole application in one global handling component.
 public class ExceptionHandler {
 
     @org.springframework.web.bind.annotation.ExceptionHandler({

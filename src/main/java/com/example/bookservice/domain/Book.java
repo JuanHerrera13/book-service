@@ -7,9 +7,12 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+/**
+ * Represents a Book entity in the MongoDB database.
+ */
 @Data
 @NoArgsConstructor
-@Document(collection = "books")
+@Document(collection = "books") // Specifies that this class is a MongoDB document and maps it to the "books" collection.
 public class Book {
 
     @Id

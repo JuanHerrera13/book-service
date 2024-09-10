@@ -4,6 +4,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+/**
+ * Data Transfer Object (DTO) of book.
+ */
 @Data
 public class BookDto {
 
@@ -20,8 +23,8 @@ public class BookDto {
     private String genre;
 
     @NotNull
-    private float price;
+    private Float price;
 
     @NotNull
-    private int quantity;
+    private Integer quantity;
 }

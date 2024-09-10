@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Data Transfer Object (DTO) for creating a new book.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

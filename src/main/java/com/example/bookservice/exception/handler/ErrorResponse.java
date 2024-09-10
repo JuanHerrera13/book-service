@@ -6,6 +6,9 @@ import org.springframework.http.HttpStatus;
 
 import java.time.Instant;
 
+/**
+ * Represents the structure of an error response returned to the client.
+ */
 @Data
 @AllArgsConstructor
 public class ErrorResponse {

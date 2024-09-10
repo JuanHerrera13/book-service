@@ -11,6 +11,9 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 
 import java.util.List;
 
+/**
+ * Mapper interface for converting between domain objects and DTOs using MapStruct.
+ */
 @Mapper(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface BookMapper {

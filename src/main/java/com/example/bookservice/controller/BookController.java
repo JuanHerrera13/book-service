@@ -15,36 +15,60 @@ import java.util.List;
  * Controller class where Book data will be created,
  * read, updated and deleted (CRUD) through Book-Service APIs.
  */
-@RestController
-@RequiredArgsConstructor
+@RestController // Annotation indicating that this class is a REST controller.
+@RequiredArgsConstructor // Generates a constructor with all final fields for dependency injection.
 public class BookController extends RootController {
 
     private final BookServiceImpl bookServiceImpl;
 
+    /**
+     * Endpoint to fetch all books.
+     * @return List of all books.
+     */
     @GetMapping(path = "/books")
     @ResponseStatus(HttpStatus.OK)
     public List<BookDto> fetchAllBooks() {
         return bookServiceImpl.findAllBooks();
     }
 
+    /**
+     * Endpoint to fetch a book by its title.
+     * @param title The title of the book to fetch.
+     * @return The book with the specified title.
+     */
     @GetMapping(path = "/books/{title}")
     @ResponseStatus(HttpStatus.OK)
     public BookDto fetchBookByTitle(@Valid @PathVariable String title) {
         return bookServiceImpl.findBookByTitle(title);
     }
 
+    /**
+     * Endpoint to add a new book.
+     * @param bookCreationDto DTO containing the fields of the book to be added.
+     * @return The added book.
+     */
     @PostMapping(path = "/books/book.add")
     @ResponseStatus(HttpStatus.CREATED)
     public BookDto addBook(@Valid @RequestBody BookCreationDto bookCreationDto) {
         return bookServiceImpl.addBook(bookCreationDto);
     }
 
+    /**
+     * Endpoint to update an existing book.
+     * @param bookId The ID of the book to update.
+     * @param bookUpdateDto DTO containing the updated fields of the book.
+     * @return The updated book.
+     */
     @PostMapping(path = "/books/{bookId}/book.update")
     @ResponseStatus(HttpStatus.OK)
     public BookDto updateBook(@PathVariable String bookId, @Valid @RequestBody BookUpdateDto bookUpdateDto) {
         return bookServiceImpl.updateBook(bookId, bookUpdateDto);
     }
 
+    /**
+     * Endpoint to delete a book.
+     * @param bookId The ID of the book to delete.
+     */
     @DeleteMapping(path = "/books/{bookId}/book.delete")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteBook(@PathVariable String bookId) {

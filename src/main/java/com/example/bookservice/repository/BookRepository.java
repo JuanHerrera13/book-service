@@ -17,7 +17,7 @@ public interface BookRepository extends MongoRepository<Book, String> {
      * @param title book's title
      * @return Book
      */
-    Optional<Book> findTopByTitle(String title);
+    Optional<Book> findTopByTitleEqualsIgnoreCase(String title);
 
     /**
      * Method that fetches the book found by its id
