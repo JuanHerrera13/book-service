@@ -2,9 +2,11 @@ package com.example.bookservice.controller;
 
 import com.example.bookservice.dto.BookCreationDto;
 import com.example.bookservice.dto.BookDto;
+import com.example.bookservice.dto.BookPurchaseDto;
 import com.example.bookservice.dto.BookUpdateDto;
 import com.example.bookservice.service.impl.BookServiceImpl;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -63,6 +65,18 @@ public class BookController extends RootController {
     @ResponseStatus(HttpStatus.OK)
     public BookDto updateBook(@PathVariable String bookId, @Valid @RequestBody BookUpdateDto bookUpdateDto) {
         return bookServiceImpl.updateBook(bookId, bookUpdateDto);
+    }
+
+    /**
+     * Endpoint to manage book purchasing logic.
+     * @param bookId The ID of the book to update.
+     * @param bookPurchaseDto DTO containing the updated fields of the book.
+     * @return The book with current quantity.
+     */
+    @PostMapping(path = "/books/{bookId}/book.purchase")
+    @ResponseStatus(HttpStatus.OK)
+    public BookDto bookPurchase(@PathVariable String bookId, @RequestBody BookPurchaseDto bookPurchaseDto) {
+        return bookServiceImpl.bookPurchase(bookId, bookPurchaseDto);
     }
 
     /**

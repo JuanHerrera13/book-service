@@ -2,6 +2,7 @@ package com.example.bookservice.exception.handler;
 
 import com.example.bookservice.exception.BookAlreadyRegisteredException;
 import com.example.bookservice.exception.BookNotFoundException;
+import com.example.bookservice.exception.BookQuantityException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -15,7 +16,8 @@ import java.time.Instant;
 public class ExceptionHandler {
 
     @org.springframework.web.bind.annotation.ExceptionHandler({
-            BookAlreadyRegisteredException.class
+            BookAlreadyRegisteredException.class,
+            BookQuantityException.class
     })
     protected ResponseEntity<ErrorResponse> handleBadRequestException(Exception exception) {
         return new ResponseEntity<>(new ErrorResponse(HttpStatus.BAD_REQUEST

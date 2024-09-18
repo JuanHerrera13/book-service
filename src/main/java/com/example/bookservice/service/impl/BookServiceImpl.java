@@ -3,10 +3,12 @@ package com.example.bookservice.service.impl;
 import com.example.bookservice.domain.Book;
 import com.example.bookservice.dto.BookCreationDto;
 import com.example.bookservice.dto.BookDto;
+import com.example.bookservice.dto.BookPurchaseDto;
 import com.example.bookservice.dto.BookUpdateDto;
 import com.example.bookservice.dto.mapping.BookMapper;
 import com.example.bookservice.exception.BookAlreadyRegisteredException;
 import com.example.bookservice.exception.BookNotFoundException;
+import com.example.bookservice.exception.BookQuantityException;
 import com.example.bookservice.repository.BookRepository;
 import com.example.bookservice.service.BookService;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,7 @@ import static com.example.bookservice.enumerator.Error.*;
 @RequiredArgsConstructor // Annotation that generates a constructor with all final fields.
 public class BookServiceImpl implements BookService {
 
+    private static final int MIN_ALLOWED_BOOKS = 0;
     private static final String SEARCHING_BOOK_BY_TITLE_LOG = "Searching book by title {}";
 
     private final BookMapper bookMapper;
@@ -118,5 +121,26 @@ public class BookServiceImpl implements BookService {
         final Book book = this.findBookById(bookId);
         bookRepository.deleteById(bookId);
         log.info("Book {} deleted.", book.getTitle());
+    }
+
+    /**
+     * Manages book purchasing logic.
+     * @param bookId The ID of the book to be updated.
+     * @param bookPurchaseDto Book Purchase DTO with bookQuantity.
+     * @return The BookDto.
+     */
+    @Override
+    public BookDto bookPurchase(String bookId, BookPurchaseDto bookPurchaseDto) {
+        final Book existingBook = this.findBookById(bookId);
+        final int bookQuantityAfterPurchase = existingBook.getQuantity() - bookPurchaseDto.getBookQuantity();
+        if (bookQuantityAfterPurchase < MIN_ALLOWED_BOOKS || bookPurchaseDto.getBookQuantity() < MIN_ALLOWED_BOOKS) {
+            throw new BookQuantityException(INVALID_BOOK_QUANTITY_MESSAGE.getErrorDescription());
+        }
+        final BookUpdateDto bookUpdateDto = new BookUpdateDto();
+        bookUpdateDto.setQuantity(bookQuantityAfterPurchase);
+        bookMapper.bookUpdateDtoToBook(bookUpdateDto, existingBook);
+        bookRepository.save(existingBook);
+        log.info("Book {} quantity updated with success.", existingBook.getTitle());
+        return bookMapper.bookToBookDto(existingBook);
     }
 }
