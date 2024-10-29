@@ -1,12 +1,13 @@
 package com.example.bookservice.controller;
 
+import com.example.bookservice.domain.Book;
 import com.example.bookservice.dto.BookCreationDto;
 import com.example.bookservice.dto.BookDto;
 import com.example.bookservice.dto.BookPurchaseDto;
 import com.example.bookservice.dto.BookUpdateDto;
+import com.example.bookservice.dto.mapping.BookMapper;
 import com.example.bookservice.service.impl.BookServiceImpl;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,7 @@ import java.util.List;
 public class BookController extends RootController {
 
     private final BookServiceImpl bookServiceImpl;
+    private final BookMapper bookMapper;
 
     /**
      * Endpoint to fetch all books.
@@ -38,10 +40,22 @@ public class BookController extends RootController {
      * @param title The title of the book to fetch.
      * @return The book with the specified title.
      */
-    @GetMapping(path = "/books/{title}")
+    @GetMapping(path = "/books/title/{title}")
     @ResponseStatus(HttpStatus.OK)
     public BookDto fetchBookByTitle(@Valid @PathVariable String title) {
         return bookServiceImpl.findBookByTitle(title);
+    }
+
+    /**
+     * Endpoint to fetch a book by its id.
+     * @param bookId The id of the book to fetch.
+     * @return The book with the specified id.
+     */
+    @GetMapping(path = "/books/id/{bookId}")
+    @ResponseStatus(HttpStatus.OK)
+    public BookDto fetchBookById(@Valid @PathVariable String bookId) {
+        final Book book = bookServiceImpl.findBookById(bookId);
+        return bookMapper.bookToBookDto(book);
     }
 
     /**
