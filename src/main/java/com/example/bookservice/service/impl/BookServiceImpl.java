@@ -3,7 +3,6 @@ package com.example.bookservice.service.impl;
 import com.example.bookservice.domain.Book;
 import com.example.bookservice.dto.BookCreationDto;
 import com.example.bookservice.dto.BookDto;
-import com.example.bookservice.dto.BookPurchaseDto;
 import com.example.bookservice.dto.BookUpdateDto;
 import com.example.bookservice.dto.mapping.BookMapper;
 import com.example.bookservice.exception.BookAlreadyRegisteredException;
@@ -36,6 +35,7 @@ public class BookServiceImpl implements BookService {
 
     /**
      * Finds and returns all books in the repository.
+     *
      * @return A list of BookDto representing all books.
      * @throws BookNotFoundException If no books are found.
      */
@@ -52,6 +52,7 @@ public class BookServiceImpl implements BookService {
 
     /**
      * Finds and returns a book by its ID.
+     *
      * @param id The ID of the book.
      * @return The Book object with the specified ID.
      * @throws BookNotFoundException If no book is found with the given ID.
@@ -65,6 +66,7 @@ public class BookServiceImpl implements BookService {
 
     /**
      * Finds and returns a book by its title.
+     *
      * @param title The title of the book.
      * @return The BookDto representing the book with the specified title.
      * @throws BookNotFoundException If no book is found with the given title.
@@ -79,6 +81,7 @@ public class BookServiceImpl implements BookService {
 
     /**
      * Adds a new book to the repository.
+     *
      * @param bookCreationDto DTO containing the fields of the book to be added.
      * @return The BookDto representing the added book.
      * @throws BookAlreadyRegisteredException If a book with the same title already exists.
@@ -99,7 +102,8 @@ public class BookServiceImpl implements BookService {
 
     /**
      * Updates an existing book in the repository.
-     * @param bookId The ID of the book to be updated.
+     *
+     * @param bookId        The ID of the book to be updated.
      * @param bookUpdateDto DTO containing the updated fields of the book.
      * @return The BookDto representing the updated book.
      */
@@ -114,6 +118,7 @@ public class BookServiceImpl implements BookService {
 
     /**
      * Deletes a book from the repository.
+     *
      * @param bookId The ID of the book to be deleted.
      */
     @Override
@@ -125,22 +130,20 @@ public class BookServiceImpl implements BookService {
 
     /**
      * Manages book purchasing logic.
-     * @param bookId The ID of the book to be updated.
-     * @param bookPurchaseDto Book Purchase DTO with bookQuantity.
-     * @return The BookDto.
+     *
+     * @param booksId The IDs of the books to be updated.
      */
     @Override
-    public BookDto bookPurchase(String bookId, BookPurchaseDto bookPurchaseDto) {
-        final Book existingBook = this.findBookById(bookId);
-        final int bookQuantityAfterPurchase = existingBook.getQuantity() - bookPurchaseDto.getBookQuantity();
-        if (bookQuantityAfterPurchase < MIN_ALLOWED_BOOKS || bookPurchaseDto.getBookQuantity() < MIN_ALLOWED_BOOKS) {
-            throw new BookQuantityException(INVALID_BOOK_QUANTITY_MESSAGE.getErrorDescription());
+    public void bookPurchase(List<String> booksId) {
+        for (String bookId : booksId) {
+            final Book existingBook = this.findBookById(bookId);
+            final int bookQuantityAfterPurchase = existingBook.getQuantity() - 1;
+            if (bookQuantityAfterPurchase < MIN_ALLOWED_BOOKS) {
+                throw new BookQuantityException(INVALID_BOOK_QUANTITY_MESSAGE.getErrorDescription().concat(bookId));
+            }
+            existingBook.setQuantity(bookQuantityAfterPurchase);
+            bookRepository.save(existingBook);
+            log.info("Book {} quantity updated with success.", existingBook.getTitle());
         }
-        final BookUpdateDto bookUpdateDto = new BookUpdateDto();
-        bookUpdateDto.setQuantity(bookQuantityAfterPurchase);
-        bookMapper.bookUpdateDtoToBook(bookUpdateDto, existingBook);
-        bookRepository.save(existingBook);
-        log.info("Book {} quantity updated with success.", existingBook.getTitle());
-        return bookMapper.bookToBookDto(existingBook);
     }
 }

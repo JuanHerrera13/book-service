@@ -3,7 +3,6 @@ package com.example.bookservice.controller;
 import com.example.bookservice.domain.Book;
 import com.example.bookservice.dto.BookCreationDto;
 import com.example.bookservice.dto.BookDto;
-import com.example.bookservice.dto.BookPurchaseDto;
 import com.example.bookservice.dto.BookUpdateDto;
 import com.example.bookservice.dto.mapping.BookMapper;
 import com.example.bookservice.service.impl.BookServiceImpl;
@@ -83,14 +82,13 @@ public class BookController extends RootController {
 
     /**
      * Endpoint to manage book purchasing logic.
-     * @param bookId The ID of the book to update.
-     * @param bookPurchaseDto DTO containing the updated fields of the book.
+     * @param booksId The IDs of the books to be purchased.
      * @return The book with current quantity.
      */
-    @PostMapping(path = "/books/{bookId}/book.purchase")
+    @PostMapping(path = "/books/book.purchase")
     @ResponseStatus(HttpStatus.OK)
-    public BookDto bookPurchase(@PathVariable String bookId, @RequestBody BookPurchaseDto bookPurchaseDto) {
-        return bookServiceImpl.bookPurchase(bookId, bookPurchaseDto);
+    public void bookPurchase(@RequestBody List<String> booksId) {
+        bookServiceImpl.bookPurchase(booksId);
     }
 
     /**

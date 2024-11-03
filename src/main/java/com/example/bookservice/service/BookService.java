@@ -3,7 +3,6 @@ package com.example.bookservice.service;
 import com.example.bookservice.domain.Book;
 import com.example.bookservice.dto.BookCreationDto;
 import com.example.bookservice.dto.BookDto;
-import com.example.bookservice.dto.BookPurchaseDto;
 import com.example.bookservice.dto.BookUpdateDto;
 import org.springframework.stereotype.Service;
 
@@ -24,5 +23,5 @@ public interface BookService {
 
     void deleteBook(String bookId);
 
-    BookDto bookPurchase(String bookId, BookPurchaseDto bookPurchaseDto);
+    void bookPurchase(List<String> booksId);
 }

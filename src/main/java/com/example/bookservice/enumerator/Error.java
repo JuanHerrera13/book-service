@@ -16,7 +16,7 @@ public enum Error {
     BOOK_ALREADY_REGISTERED("BOOK_ALREADY_REGISTERED",
             "Book is already registered."),
     INVALID_BOOK_QUANTITY_MESSAGE("INVALID_BOOK_QUANTITY_MESSAGE",
-            "The book quantity must be greater than 0 and less than or equal to the available stock.");
+            "The book could not be purchased because there are no more books with id ");
 
     private final String errorMessage;
     private final String errorDescription;
