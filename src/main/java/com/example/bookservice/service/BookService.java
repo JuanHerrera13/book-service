@@ -23,5 +23,5 @@ public interface BookService {
 
     void deleteBook(String bookId);
 
-    void bookPurchase(List<String> booksId);
+    void bookPurchase(String bookId);
 }

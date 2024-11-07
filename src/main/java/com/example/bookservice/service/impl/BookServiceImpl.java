@@ -27,7 +27,7 @@ import static com.example.bookservice.enumerator.Error.*;
 @RequiredArgsConstructor // Annotation that generates a constructor with all final fields.
 public class BookServiceImpl implements BookService {
 
-    private static final int MIN_ALLOWED_BOOKS = 0;
+    private static final int MIN_ALLOWED_BOOKS = 1;
     private static final String SEARCHING_BOOK_BY_TITLE_LOG = "Searching book by title {}";
 
     private final BookMapper bookMapper;
@@ -131,11 +131,10 @@ public class BookServiceImpl implements BookService {
     /**
      * Manages book purchasing logic.
      *
-     * @param booksId The IDs of the books to be updated.
+     * @param bookId The ID of the book to be updated.
      */
     @Override
-    public void bookPurchase(List<String> booksId) {
-        for (String bookId : booksId) {
+    public void bookPurchase(String bookId) {
             final Book existingBook = this.findBookById(bookId);
             final int bookQuantityAfterPurchase = existingBook.getQuantity() - 1;
             if (bookQuantityAfterPurchase < MIN_ALLOWED_BOOKS) {
@@ -144,6 +143,5 @@ public class BookServiceImpl implements BookService {
             existingBook.setQuantity(bookQuantityAfterPurchase);
             bookRepository.save(existingBook);
             log.info("Book {} quantity updated with success.", existingBook.getTitle());
-        }
     }
 }

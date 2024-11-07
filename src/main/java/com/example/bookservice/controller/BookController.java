@@ -82,13 +82,13 @@ public class BookController extends RootController {
 
     /**
      * Endpoint to manage book purchasing logic.
-     * @param booksId The IDs of the books to be purchased.
+     * @param bookId The ID of the book to be purchased.
      * @return The book with current quantity.
      */
     @PostMapping(path = "/books/book.purchase")
     @ResponseStatus(HttpStatus.OK)
-    public void bookPurchase(@RequestBody List<String> booksId) {
-        bookServiceImpl.bookPurchase(booksId);
+    public void bookPurchase(@RequestBody String bookId) {
+        bookServiceImpl.bookPurchase(bookId);
     }
 
     /**
